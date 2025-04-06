@@ -4,5 +4,6 @@
     "SuperAdmin": true,
     "Admin": true,
     "User": true,
-    "Store": true
+    "Store": true,
+    "Product": true
 }
