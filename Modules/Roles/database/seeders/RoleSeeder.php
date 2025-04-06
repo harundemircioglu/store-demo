@@ -14,14 +14,20 @@ class RoleSeeder extends Seeder
     {
         Role::firstOrCreate(['name' => 'super-admin'], [
             'guard_name' => 'api',
+            'title' => 'Super Admin',
+            'description' => 'Has access to all features and settings.',
         ]);
 
         Role::firstOrCreate(['name' => 'admin'], [
             'guard_name' => 'api',
+            'title' => 'Admin',
+            'description' => 'Has access to most features and settings.',
         ]);
 
         Role::firstOrCreate(['name' => 'user'], [
             'guard_name' => 'api',
+            'title' => 'User',
+            'description' => 'Has access to basic features.',
         ]);
     }
 }
