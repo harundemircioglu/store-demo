@@ -12,22 +12,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::firstOrCreate(['email'=>'superadmin@gmail.com'], [
+        User::firstOrCreate(['email' => 'superadmin@gmail.com'], [
             'name' => 'Super Admin',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
+            'role' => 1,
         ])->assignRole('super-admin');
 
-        User::firstOrCreate(['email'=>'admin@gmail.com'], [
+        User::firstOrCreate(['email' => 'admin@gmail.com'], [
             'name' => 'Admin',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
+            'role' => 2,
         ])->assignRole('admin');
 
-        User::firstOrCreate(['email'=>'user@gmail.com'], [
+        User::firstOrCreate(['email' => 'user@gmail.com'], [
             'name' => 'User',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
+            'role' => 3,
         ])->assignRole('user');
     }
 }

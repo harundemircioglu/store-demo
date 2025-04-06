@@ -12,6 +12,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRoles;
 
+    // role => 1 = super-admin, 2 = admin, 3 = user
+
     /**
      * The attributes that are mass assignable.
      *
