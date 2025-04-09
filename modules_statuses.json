@@ -1,9 +1,6 @@
 {
     "Roles": true,
     "Auth": true,
-    "SuperAdmin": true,
-    "Admin": true,
-    "User": true,
     "Store": true,
     "Product": true,
     "Log": true,
