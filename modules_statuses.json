@@ -4,5 +4,6 @@
     "Store": true,
     "Product": true,
     "Log": true,
-    "Notification": true
+    "Notification": true,
+    "Payment": true
 }
