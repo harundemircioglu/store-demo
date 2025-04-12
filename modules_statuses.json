@@ -6,5 +6,7 @@
     "Log": true,
     "Notification": true,
     "Payment": true,
-    "Queue": true
+    "Queue": true,
+    "Cart": true,
+    "Order": true
 }
