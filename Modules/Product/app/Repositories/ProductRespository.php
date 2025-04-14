@@ -2,9 +2,10 @@
 
 namespace Modules\Product\Repositories;
 
+use Modules\Product\Interfaces\ProductInterface;
 use Modules\Product\Models\Product;
 
-class ProductRespository
+class ProductRespository implements ProductInterface
 {
     public function store(array $data)
     {

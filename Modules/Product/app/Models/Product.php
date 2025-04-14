@@ -8,4 +8,6 @@ use Modules\Log\Traits\Loggable;
 class Product extends Model
 {
     use Loggable;
+
+    protected $guarded = [];
 }
