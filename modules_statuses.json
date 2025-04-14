@@ -8,5 +8,6 @@
     "Payment": true,
     "Queue": true,
     "Cart": true,
-    "Order": true
+    "Order": true,
+    "Base": true
 }
