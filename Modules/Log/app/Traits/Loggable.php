@@ -10,15 +10,15 @@ trait Loggable
     protected static function bootLoggable()
     {
         static::created(function ($model) {
-            self::createLog($model, 'create', 'Yeni bir kayıt oluşturuldu.');
+            self::createLog($model, 'store', 'A new record has been created');
         });
 
         static::updated(function ($model) {
-            self::createLog($model, 'update', 'Kayıt güncellendi.');
+            self::createLog($model, 'store', 'Record updated');
         });
 
         static::deleted(function ($model) {
-            self::createLog($model, 'delete', 'Kayıt silindi.');
+            self::createLog($model, 'store', 'Record deleted');
         });
     }
 
