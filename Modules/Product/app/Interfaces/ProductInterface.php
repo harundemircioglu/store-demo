@@ -2,6 +2,8 @@
 
 namespace Modules\Product\Interfaces;
 
-interface ProductInterface {
-    public function store(array $data);
+use Modules\Base\Interfaces\BaseInterface;
+
+interface ProductInterface extends BaseInterface {
+
 }

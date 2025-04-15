@@ -9,12 +9,11 @@ use Modules\Base\Repositories\BaseRepository;
 
 class ApiBaseController extends Controller
 {
-    protected $baseRepository, $model;
+    protected $baseRepository;
 
-    public function __construct(BaseRepository $baseRepository, Model $model)
+    public function __construct(BaseRepository $baseRepository)
     {
         $this->baseRepository = $baseRepository;
-        $this->model = $model;
     }
 
     /**
@@ -22,47 +21,34 @@ class ApiBaseController extends Controller
      */
     public function index()
     {
-        return $this->baseRepository->getAll($this->model);
-    }
+        $this->baseRepository->getAll();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('base::create');
+        return response()->json([
+            'message' => 'All records retrieved successfully',
+        ], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
 
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return $this->baseRepository->find($this->model, $id);
-    }
+        $this->baseRepository->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('base::edit');
+        return response()->json([
+            'message' => 'Record retrieved successfully',
+        ], 200);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->baseRepository->destroy($id);
 
+        return response()->json([
+            'message' => 'Record deleted successfully',
+        ], 200);
     }
 }

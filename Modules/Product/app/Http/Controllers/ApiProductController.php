@@ -4,32 +4,18 @@ namespace Modules\Product\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Base\Http\Controllers\ApiBaseController;
+use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Product\Repositories\ProductRespository;
 use Modules\Store\Http\Requests\StoreProductRequest;
 
-class ApiProductController extends Controller
+class ApiProductController extends ApiBaseController
 {
     protected $productRepository;
 
     public function __construct(ProductRespository $productRepository)
     {
-        $this->productRepository = $productRepository;
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('product::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('product::create');
+        parent::__construct($productRepository);
     }
 
     /**
@@ -47,28 +33,15 @@ class ApiProductController extends Controller
     }
 
     /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('product::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('product::edit');
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(UpdateProductRequest $request, $id) {
+        $data = $request->validated();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        $this->productRepository->update($data,$id);
+
+        return response()->json([
+            'message' => 'Product updated successfully',
+        ], 200);
+    }
 }

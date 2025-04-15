@@ -9,5 +9,9 @@ class Product extends Model
 {
     use Loggable;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'title',
+        'description',
+    ];
 }
