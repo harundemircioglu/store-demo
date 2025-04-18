@@ -12,6 +12,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'exists:users,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
         ];
@@ -20,6 +21,9 @@ class StoreProductRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'user_id.required' => 'The user_id field is required.',
+            'user_id.exists' => 'The selected user_id is invalid.',
+
             'title.required' => 'The title field is required.',
             'title.string' => 'The title must be a string.',
             'title.max' => 'The title may not be greater than 255 characters.',

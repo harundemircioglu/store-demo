@@ -7,7 +7,7 @@ use Modules\Base\Repositories\BaseRepository;
 use Modules\Product\Interfaces\ProductInterface;
 use Modules\Product\Models\Product;
 
-class ProductRespository extends BaseRepository
+class ProductRespository extends BaseRepository implements ProductInterface
 {
     public function __construct(Product $model)
     {

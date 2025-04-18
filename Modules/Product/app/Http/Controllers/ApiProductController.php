@@ -6,16 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Base\Http\Controllers\ApiBaseController;
 use Modules\Product\Http\Requests\UpdateProductRequest;
+use Modules\Product\Interfaces\ProductInterface;
 use Modules\Product\Repositories\ProductRespository;
 use Modules\Store\Http\Requests\StoreProductRequest;
 
 class ApiProductController extends ApiBaseController
 {
-    protected $productRepository;
+    protected ProductInterface $productRepository;
 
-    public function __construct(ProductRespository $productRepository)
+    public function __construct(ProductInterface $productRepository)
     {
         parent::__construct($productRepository);
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -23,12 +25,11 @@ class ApiProductController extends ApiBaseController
      */
     public function store(StoreProductRequest $request)
     {
-        $data = $request->validated();
-
-        $this->productRepository->store($data);
+        $product = $this->productRepository->store($request->validated());
 
         return response()->json([
-            'message' => 'Product created successfully',
+            'message' => 'Product created successfully.',
+            'data' => $product,
         ], 201);
     }
 
@@ -36,12 +37,11 @@ class ApiProductController extends ApiBaseController
      * Update the specified resource in storage.
      */
     public function update(UpdateProductRequest $request, $id) {
-        $data = $request->validated();
-
-        $this->productRepository->update($data,$id);
+        $product = $this->productRepository->update($request->validated(), $id);
 
         return response()->json([
-            'message' => 'Product updated successfully',
-        ], 200);
+            'message' => 'Product updated successfully.',
+            'data' => $product,
+        ]);
     }
 }

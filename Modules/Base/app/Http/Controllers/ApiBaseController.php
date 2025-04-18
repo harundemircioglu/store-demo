@@ -5,13 +5,13 @@ namespace Modules\Base\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Modules\Base\Repositories\BaseRepository;
+use Modules\Base\Interfaces\BaseInterface;
 
 class ApiBaseController extends Controller
 {
-    protected $baseRepository;
+    protected BaseInterface $baseRepository;
 
-    public function __construct(BaseRepository $baseRepository)
+    public function __construct(BaseInterface $baseRepository)
     {
         $this->baseRepository = $baseRepository;
     }
@@ -21,11 +21,7 @@ class ApiBaseController extends Controller
      */
     public function index()
     {
-        $this->baseRepository->getAll();
-
-        return response()->json([
-            'message' => 'All records retrieved successfully',
-        ], 200);
+        return response()->json($this->baseRepository->getAll());
     }
 
     /**
@@ -33,11 +29,7 @@ class ApiBaseController extends Controller
      */
     public function show($id)
     {
-        $this->baseRepository->find($id);
-
-        return response()->json([
-            'message' => 'Record retrieved successfully',
-        ], 200);
+        return response()->json($this->baseRepository->find($id));
     }
 
     /**
@@ -48,7 +40,7 @@ class ApiBaseController extends Controller
         $this->baseRepository->destroy($id);
 
         return response()->json([
-            'message' => 'Record deleted successfully',
-        ], 200);
+            'message' => 'Deleted successfully.'
+        ]);
     }
 }
