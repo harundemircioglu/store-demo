@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Modules\Base\Http\Controllers\ApiBaseController;
 use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Product\Interfaces\ProductInterface;
-use Modules\Product\Repositories\ProductRespository;
 use Modules\Store\Http\Requests\StoreProductRequest;
 
 class ApiProductController extends ApiBaseController
