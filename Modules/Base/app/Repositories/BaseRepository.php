@@ -21,7 +21,13 @@ class BaseRepository implements BaseInterface
 
     public function find($id)
     {
-        return $this->model->find($id);
+        $record = $this->model->find($id);
+
+        if ($record) {
+            return $record;
+        }
+
+        return null;
     }
 
     public function store(array $data)
