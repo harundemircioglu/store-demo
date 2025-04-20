@@ -24,6 +24,12 @@ trait Loggable
 
     public static function createLog($model, $action, $message = null)
     {
+        $changes = $model->getChanges();
+
+        if (empty($changes)) {
+            $changes = json_encode(['message' => 'No changes made']);
+        }
+
         Log::create([
             'model' => class_basename($model),
             'model_id' => $model->id,
@@ -34,7 +40,7 @@ trait Loggable
             'user_agent' => request()->userAgent(),
             'url' => request()->fullUrl(),
             'method' => request()->method(),
-            'changes' => json_encode($model->getChanges()),
+            'changes' => $changes,
         ]);
     }
 

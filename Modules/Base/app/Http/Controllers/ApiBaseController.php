@@ -20,10 +20,18 @@ class ApiBaseController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'message' => "",
-            'data' => $this->baseRepository->getAll(),
-        ], 200);
+        try {
+            $data = $this->baseRepository->getAll();
+            return response()->json([
+                'message' => "Data retrieved successfully.",
+                'data' => $data,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Failed to retrieve data. Please try again later.",
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -31,10 +39,19 @@ class ApiBaseController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json([
-            'message' => "",
-            'record' => $this->baseRepository->store($request->all()),
-        ], 200);
+        try {
+            $data = $request->all();
+            $record = $this->baseRepository->store($data);
+            return response()->json([
+                'message' => "Resource created successfully.",
+                'record' => $record,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Failed to create resource. Please check the input and try again.",
+                'error' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**
@@ -42,10 +59,23 @@ class ApiBaseController extends Controller
      */
     public function show($id)
     {
-        return response()->json([
-            'message' => "",
-            'record' => $this->baseRepository->find($id),
-        ], 200);
+        try {
+            $record = $this->baseRepository->find($id);
+            if (!$record) {
+                return response()->json([
+                    'message' => "Resource not found.",
+                ], 404);
+            }
+            return response()->json([
+                'message' => "Resource retrieved successfully.",
+                'record' => $record,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Failed to retrieve resource. Please try again later.",
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -53,10 +83,24 @@ class ApiBaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return response()->json([
-            'message' => "",
-            'record' => $this->baseRepository->update($request->all(), $id),
-        ], 200);
+        try {
+            $data = $request->all();
+            $record = $this->baseRepository->update($data, $id);
+            if (!$record) {
+                return response()->json([
+                    'message' => "Resource not found or update failed.",
+                ], 404);
+            }
+            return response()->json([
+                'message' => "Resource updated successfully.",
+                'record' => $record,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Failed to update resource. Please check the input and try again.",
+                'error' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**
@@ -64,9 +108,21 @@ class ApiBaseController extends Controller
      */
     public function destroy($id)
     {
-        return response()->json([
-            'message' => "",
-            'record' => $this->baseRepository->destroy($id),
-        ], 200);
+        try {
+            $result = $this->baseRepository->destroy($id);
+            if (!$result) {
+                return response()->json([
+                    'message' => "Resource not found or delete failed.",
+                ], 404);
+            }
+            return response()->json([
+                'message' => "Resource deleted successfully.",
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Failed to delete resource. Please try again later.",
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }
