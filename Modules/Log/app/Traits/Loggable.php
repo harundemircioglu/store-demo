@@ -14,11 +14,11 @@ trait Loggable
         });
 
         static::updated(function ($model) {
-            self::createLog($model, 'store', 'Record updated');
+            self::createLog($model, 'update', 'Record updated');
         });
 
         static::deleted(function ($model) {
-            self::createLog($model, 'store', 'Record deleted');
+            self::createLog($model, 'delete', 'Record deleted');
         });
     }
 
@@ -30,6 +30,11 @@ trait Loggable
             'action' => $action,
             'message' => $message,
             'user_id' => Auth::id(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'url' => request()->fullUrl(),
+            'method' => request()->method(),
+            'changes' => json_encode($model->getChanges()),
         ]);
     }
 

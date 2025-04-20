@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('action')->nullable();
             $table->text('message')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('ip_address')->nullable();
+            $table->string('user_agent')->nullable();
+            $table->string('url')->nullable();
+            $table->string('method')->nullable();
+            $table->json('changes')->nullable();
             $table->timestamps();
         });
     }

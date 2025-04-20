@@ -8,10 +8,6 @@ use Modules\Log\Models\Log;
 
 class Logger
 {
-    // public function handle() {}
-    /**
-     * Veritabanına log kaydı ekler
-     */
     public function db($model, $action, $message = null, $modelId = null)
     {
         Log::create([
@@ -20,20 +16,19 @@ class Logger
             'action' => $action,
             'message' => $message,
             'user_id' => Auth::id(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'url' => request()->fullUrl(),
+            'method' => request()->method(),
+            'changes' => json_encode($model->getChanges()),
         ]);
     }
 
-    /**
-     * Dosya tabanlı log kaydı ekler
-     */
     public function file($action, $message, $context = [])
     {
         FacadesLog::info($action, array_merge(['message' => $message], $context));
     }
 
-    /**
-     * Hem veritabanına hem dosyaya log kaydı ekler
-     */
     public function both($model, $action, $message = null, $modelId = null, $context = [])
     {
         $this->db($model, $action, $message, $modelId);
