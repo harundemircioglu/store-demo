@@ -33,7 +33,7 @@ class ApiBaseController extends Controller
     {
         return response()->json([
             'message' => "",
-            'record' => $this->baseRepository->store($request->validated()),
+            'record' => $this->baseRepository->store($request->all()),
         ], 200);
     }
 
@@ -55,7 +55,7 @@ class ApiBaseController extends Controller
     {
         return response()->json([
             'message' => "",
-            'record' => $this->baseRepository->update($request->validated(), $id),
+            'record' => $this->baseRepository->update($request->all(), $id),
         ], 200);
     }
 
@@ -64,10 +64,9 @@ class ApiBaseController extends Controller
      */
     public function destroy($id)
     {
-        $this->baseRepository->destroy($id);
-
         return response()->json([
             'message' => "",
+            'record' => $this->baseRepository->destroy($id),
         ], 200);
     }
 }

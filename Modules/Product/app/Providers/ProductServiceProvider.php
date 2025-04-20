@@ -5,6 +5,7 @@ namespace Modules\Product\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Base\Interfaces\BaseInterface;
+use Modules\Product\Interfaces\ProductInterface;
 use Modules\Product\Repositories\ProductRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -38,7 +39,8 @@ class ProductServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(BaseInterface::class, ProductRepository::class);
+        $this->app->bind(BaseInterface::class, ProductInterface::class);
+        $this->app->bind(ProductInterface::class, ProductRepository::class);
     }
 
     /**
