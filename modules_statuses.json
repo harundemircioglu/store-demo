@@ -8,5 +8,6 @@
     "Payment": true,
     "Cart": true,
     "Order": true,
-    "Base": true
+    "Base": true,
+    "Jobs": true
 }
