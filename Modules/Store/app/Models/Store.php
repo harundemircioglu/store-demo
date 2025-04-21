@@ -18,4 +18,9 @@ class Store extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function storeFeatures()
+    {
+        return $this->hasMany(CustomizableStoreFeature::class, 'customizable_store_features_id', 'id');
+    }
 }
