@@ -10,6 +10,8 @@ class Store extends Model
 {
     use Loggable;
 
+    // store_type => 1 = individual, 2 = corporate
+
     protected $guarded = [];
 
     public function user()

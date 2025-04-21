@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('store_banner')->nullable();
             $table->string('store_address')->nullable();
             $table->tinyInteger('store_status')->default(0);
+            $table->enum('store_type', [1, 2])->default(1)->nullable();
             $table->timestamps();
         });
     }
