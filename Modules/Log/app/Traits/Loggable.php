@@ -24,7 +24,7 @@ trait Loggable
 
     public static function createLog($model, $action, $message = null)
     {
-        $changes = $model->getChanges();
+        $changes = json_encode($model->getChanges());
 
         if (empty($changes)) {
             $changes = json_encode(['message' => 'No changes made']);

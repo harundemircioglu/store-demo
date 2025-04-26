@@ -17,6 +17,7 @@ class ApiProductController extends ApiBaseController
     public function __construct(ProductInterface $productRepository)
     {
         parent::__construct($productRepository);
+
         $this->productRepository = $productRepository;
     }
 

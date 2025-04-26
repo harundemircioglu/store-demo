@@ -13,18 +13,14 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRoles, Loggable;
 
-    // role => 1 = super-admin, 2 = admin, 3 = user
+    // role => 1 = super-admin, 2 = admin, 3 = user, 4 = store
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.

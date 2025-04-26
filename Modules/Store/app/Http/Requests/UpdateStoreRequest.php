@@ -4,7 +4,7 @@ namespace Modules\Store\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStoreRequest extends FormRequest
+class UpdateStoreRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,15 +14,14 @@ class StoreStoreRequest extends FormRequest
         return [
             'store_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'store_logo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'store_banner' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'store_logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'store_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'store_address' => ['nullable', 'string', 'max:255'],
-            'store_type' => ['required', 'integer', 'in:1,2'],
         ];
     }
 
-    public function messages(): array
+    public function messages():array
     {
         return [
             'store_name.required' => 'The store name is required.',
@@ -34,27 +33,20 @@ class StoreStoreRequest extends FormRequest
             'email.max' => 'The email address may not be greater than 255 characters.',
             'email.unique' => 'This email address is already in use.',
 
-            'password.required' => 'The password is required.',
             'password.string' => 'The password must be a string.',
             'password.min' => 'The password must be at least 8 characters.',
             'password.confirmed' => 'The password confirmation does not match.',
 
-            'store_logo.required' => 'The store logo is required.',
             'store_logo.image' => 'The store logo must be an image.',
             'store_logo.mimes' => 'The store logo must be a file of type: jpeg, png, jpg, gif, svg.',
             'store_logo.max' => 'The store logo may not be larger than 2MB.',
 
-            'store_banner.required' => 'The store banner is required.',
             'store_banner.image' => 'The store banner must be an image.',
             'store_banner.mimes' => 'The store banner must be a file of type: jpeg, png, jpg, gif, svg.',
             'store_banner.max' => 'The store banner may not be larger than 2MB.',
 
             'store_address.string' => 'The store address must be a string.',
             'store_address.max' => 'The store address may not be greater than 255 characters.',
-
-            'store_type.required' => 'The store type is required.',
-            'store_type.integer' => 'The store type must be an integer.',
-            'store_type.in' => 'The selected store type is invalid. Please select a valid store type.',
         ];
     }
 }

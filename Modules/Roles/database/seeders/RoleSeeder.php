@@ -29,5 +29,11 @@ class RoleSeeder extends Seeder
             'title' => 'User',
             'description' => 'Has access to basic features.',
         ]);
+
+        Role::firstOrCreate(['name' => 'store'], [
+            'guard_name' => 'api',
+            'title' => 'Store',
+            'description' => 'Has limited access to features.',
+        ]);
     }
 }

@@ -32,5 +32,12 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'role' => 3,
         ])->assignRole('user');
+
+        User::firstOrCreate(['email' => 'store@gmail.com'], [
+            'name' => 'Store',
+            'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+            'role' => 4,
+        ])->assignRole('store');
     }
 }
