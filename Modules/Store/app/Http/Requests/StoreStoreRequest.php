@@ -17,6 +17,8 @@ class StoreStoreRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'store_logo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'store_banner' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'store_address' => ['nullable', 'string', 'max:255'],
+            'store_type' => ['required', 'integer', 'in:1,2'],
         ];
     }
 
@@ -46,6 +48,13 @@ class StoreStoreRequest extends FormRequest
             'store_banner.image' => 'The store banner must be an image.',
             'store_banner.mimes' => 'The store banner must be a file of type: jpeg, png, jpg, gif, svg.',
             'store_banner.max' => 'The store banner may not be larger than 2MB.',
+
+            'store_address.string' => 'The store address must be a string.',
+            'store_address.max' => 'The store address may not be greater than 255 characters.',
+
+            'store_type.required' => 'The store type is required.',
+            'store_type.integer' => 'The store type must be an integer.',
+            'store_type.in' => 'The selected store type is invalid. Please select a valid store type.',
         ];
     }
 

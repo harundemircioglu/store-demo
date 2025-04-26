@@ -21,6 +21,6 @@ class Store extends Model
 
     public function storeFeatures()
     {
-        return $this->hasMany(CustomizableStoreFeature::class, 'customizable_store_features_id', 'id');
+        return $this->hasMany(StoreFeature::class, 'store_id', 'id');
     }
 }

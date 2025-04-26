@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Modules\Base\Http\Controllers\ApiBaseController;
+use Modules\Product\Http\Requests\StoreProductRequest;
 use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Product\Interfaces\ProductInterface;
-use Modules\Product\Repositories\ProductRepository;
-use Modules\Store\Http\Requests\StoreProductRequest;
 
 class ApiProductController extends ApiBaseController
 {
