@@ -9,5 +9,6 @@
     "Cart": true,
     "Order": true,
     "Base": true,
-    "Jobs": true
+    "Jobs": true,
+    "Category": true
 }
