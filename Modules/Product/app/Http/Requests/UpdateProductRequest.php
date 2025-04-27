@@ -14,6 +14,8 @@ class UpdateProductRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'subcategory_id' => ['nullable', 'integer', 'exists:subcategories,id'],
         ];
     }
 
@@ -26,6 +28,13 @@ class UpdateProductRequest extends FormRequest
 
             'description.required' => 'The description field is required.',
             'description.string' => 'The description must be a string.',
+
+            'category_id.required' => 'The category field is required.',
+            'category_id.integer' => 'The category must be an integer.',
+            'category_id.exists' => 'The selected category is invalid.',
+
+            'subcategory_id.integer' => 'The subcategory must be an integer.',
+            'subcategory_id.exists' => 'The selected subcategory is invalid.',
         ];
     }
 

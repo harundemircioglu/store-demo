@@ -3,9 +3,12 @@
 namespace Modules\Category\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Log\Traits\Loggable;
 
 class Subcategory extends Model
 {
+    use Loggable;
+
     protected $guarded = ['id', 'category_id'];
 
     public function category()

@@ -4,6 +4,13 @@ namespace Modules\Category\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Base\Interfaces\BaseInterface;
+use Modules\Category\Interfaces\CategoryFeatureInterface;
+use Modules\Category\Interfaces\CategoryInterface;
+use Modules\Category\Interfaces\SubcategoryInterface;
+use Modules\Category\Repositories\CategoryFeatureRepository;
+use Modules\Category\Repositories\CategoryRepository;
+use Modules\Category\Repositories\SubcategoryRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -36,6 +43,14 @@ class CategoryServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(BaseInterface::class, CategoryInterface::class);
+        $this->app->bind(CategoryInterface::class, CategoryRepository::class);
+
+        $this->app->bind(BaseInterface::class, SubcategoryInterface::class);
+        $this->app->bind(SubcategoryInterface::class, SubcategoryRepository::class);
+
+        $this->app->bind(BaseInterface::class, CategoryFeatureInterface::class);
+        $this->app->bind(CategoryFeatureInterface::class, CategoryFeatureRepository::class);
     }
 
     /**
@@ -62,7 +77,7 @@ class CategoryServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -102,10 +117,10 @@ class CategoryServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
@@ -125,8 +140,8 @@ class CategoryServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 
