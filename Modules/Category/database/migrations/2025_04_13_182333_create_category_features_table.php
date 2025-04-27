@@ -20,7 +20,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->foreignId('subcategory_id')
                 ->nullable()
-                ->constrained('suucategories')
+                ->constrained('subcategories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('name')->nullable();
