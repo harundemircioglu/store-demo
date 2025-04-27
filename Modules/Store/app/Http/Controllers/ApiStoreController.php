@@ -44,13 +44,6 @@ class ApiStoreController extends ApiBaseController
         ];
 
         $user = $this->userRepository->store($userData);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User creation failed',
-            ], 500);
-        }
-
         $user->assignRole('store');
         $user->save();
 
@@ -69,74 +62,69 @@ class ApiStoreController extends ApiBaseController
         return response()->json([
             'message' => 'Store created successfuly',
             'store' => $store,
-        ], 201);
+        ], 200);
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), (new UpdateStoreRequest())->rules());
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $data = $validator->validated();
+
+        $store = $this->storeRepository->find($id);
+
+        if (!$store) {
+            return response()->json([
+                'message' => 'Store not found',
+            ], 404);
+        }
+
+        $storeData = [
+            'store_name' => $data['store_name'],
+            'store_slug' => makeSlug($data['store_name']),
+            'store_address' => $data['store_address'],
+        ];
+
+        if (isset($data['store_logo'])) {
+            $storeData['store_logo'] = uploadFile($data['store_logo']);
+        }
+
+        if (isset($data['store_banner'])) {
+            $storeData['store_banner'] = uploadFile($data['store_banner']);
+        }
+
+        $this->storeRepository->update($storeData, $id);
+
+        $user = $this->userRepository->find($store->user_id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        $userData = [];
+
+        if (!empty($data['password'])) {
+            $userData['password'] = bcrypt($data['password']);
+        }
+
+        if (!empty($data['email'])) {
+            $userData['email'] = $data['email'];
+        }
+
+        $this->userRepository->update($userData, $store->user_id);
+
         return response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 422);
-    }
-
-    $data = $validator->validated();
-
-    $store = $this->storeRepository->find($id);
-
-    if (!$store) {
-        return response()->json([
-            'message' => 'Store not found',
-        ], 404);
-    }
-
-    // Store bilgilerini güncelle
-    $storeData = [
-        'store_name' => $data['store_name'],
-        'store_slug' => makeSlug($data['store_name']),
-        'store_address' => $data['store_address'],
-    ];
-
-    // Eğer logo veya banner varsa yükle
-    if (isset($data['store_logo'])) {
-        $storeData['store_logo'] = uploadFile($data['store_logo']);
-    }
-
-    if (isset($data['store_banner'])) {
-        $storeData['store_banner'] = uploadFile($data['store_banner']);
-    }
-
-    $this->storeRepository->update($storeData, $id);
-
-    // Kullanıcı bilgilerini güncelle
-    $user = $this->userRepository->find($store->user_id);
-
-    if (!$user) {
-        return response()->json([
-            'message' => 'User not found',
-        ], 404);
-    }
-
-    $userData = [];
-
-    // Şifre varsa güncelle
-    if (!empty($data['password'])) {
-        $userData['password'] = bcrypt($data['password']);
-    }
-
-    // Email'i güncelle
-    if (!empty($data['email'])) {
-        $userData['email'] = $data['email'];
-    }
-
-    $this->userRepository->update($userData, $store->user_id);
-
-    return response()->json([
-        'message' => 'Store updated successfully',
-        'store' => $store,
-    ], 200); // 200 OK status code
+            'message' => 'Store updated successfully',
+            'store' => $store,
+        ], 200);
     }
 }

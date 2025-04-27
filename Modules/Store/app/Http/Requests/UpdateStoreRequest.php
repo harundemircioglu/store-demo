@@ -3,6 +3,8 @@
 namespace Modules\Store\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Store\Models\Store;
 
 class UpdateStoreRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateStoreRequest extends FormRequest
     {
         return [
             'store_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore(auth()->id())],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'store_logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'store_banner' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -21,7 +23,7 @@ class UpdateStoreRequest extends FormRequest
         ];
     }
 
-    public function messages():array
+    public function messages(): array
     {
         return [
             'store_name.required' => 'The store name is required.',
