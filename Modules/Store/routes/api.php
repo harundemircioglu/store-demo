@@ -3,10 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Store\Http\Controllers\ApiStoreController;
 
-Route::prefix('store')->group(function () {
-    Route::post('/store', [ApiStoreController::class, 'store']);
+Route::middleware(['auth'])->group(function () {
+    Route::apiResource('store', ApiStoreController::class);
 
-    Route::middleware(['auth'])->group(function(){
+    Route::prefix('store')->group(function () {
         Route::post('/update/{id}', [ApiStoreController::class, 'update']);
     });
 });
