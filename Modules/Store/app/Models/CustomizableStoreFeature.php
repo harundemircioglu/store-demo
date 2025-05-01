@@ -10,5 +10,5 @@ class CustomizableStoreFeature extends Model
 
     // type => 1 = text, 2 = textarea, 3 = select, 4 = checkbox, 5 = radio, 6 = file, 7 = date, 8 = time, 9 = datetime
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 }
