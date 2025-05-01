@@ -11,7 +11,7 @@ class Product extends Model
 {
     use Loggable;
 
-    protected $guarded = ['id', 'category_id', 'subcategory_id'];
+    protected $guarded = ['id'];
 
     public function category()
     {

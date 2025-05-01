@@ -37,32 +37,36 @@ class ApiStoreController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $userData = [
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role' => 4,
-        ];
+        try {
+            $userData = [
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'role' => 4,
+            ];
 
-        $user = $this->userRepository->store($userData);
-        $user->assignRole('store');
-        $user->save();
+            $user = $this->userRepository->store($userData);
+            $user->assignRole('store');
+            $user->save();
 
-        $storeData = [
-            'user_id' => $user->id,
-            'store_name' => $data['store_name'],
-            'store_slug' => makeSlug($data['store_name']),
-            'store_logo' => uploadFile($data['store_logo']),
-            'store_banner' => uploadFile($data['store_banner']),
-            'store_address' => $data['store_address'],
-            'store_type' => $data['store_type'],
-        ];
+            $storeData = [
+                'user_id' => $user->id,
+                'store_name' => $data['store_name'],
+                'store_slug' => makeSlug($data['store_name']),
+                'store_logo' => uploadFile($data['store_logo']),
+                'store_banner' => uploadFile($data['store_banner']),
+                'store_address' => $data['store_address'],
+                'store_type' => $data['store_type'],
+            ];
 
-        $store = $this->storeRepository->store($storeData);
+            $store = $this->storeRepository->store($storeData);
 
-        return response()->json([
-            'message' => 'Store created successfuly',
-            'store' => $store,
-        ], 200);
+            return response()->json([
+                'message' => 'Store created successfuly',
+                'store' => $store,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     public function update(Request $request, $id)
@@ -78,53 +82,49 @@ class ApiStoreController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $store = $this->storeRepository->find($id);
+        try {
+            $store = $this->storeRepository->find($id);
 
-        if (!$store) {
+            if (!$store) {
+                return response()->json([
+                    'message' => 'Store not found',
+                ], 404);
+            }
+
+            $storeData = [
+                'store_name' => $data['store_name'],
+                'store_slug' => makeSlug($data['store_name']),
+                'store_address' => $data['store_address'],
+            ];
+
+            if (isset($data['store_logo'])) {
+                $storeData['store_logo'] = uploadFile($data['store_logo']);
+            }
+
+            if (isset($data['store_banner'])) {
+                $storeData['store_banner'] = uploadFile($data['store_banner']);
+            }
+
+            $this->storeRepository->update($storeData, $id);
+
+            $userData = [];
+
+            if (!empty($data['password'])) {
+                $userData['password'] = bcrypt($data['password']);
+            }
+
+            if (!empty($data['email'])) {
+                $userData['email'] = $data['email'];
+            }
+
+            $this->userRepository->update($userData, $store->user_id);
+
             return response()->json([
-                'message' => 'Store not found',
-            ], 404);
+                'message' => 'Store updated successfully',
+                'store' => $store,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        $storeData = [
-            'store_name' => $data['store_name'],
-            'store_slug' => makeSlug($data['store_name']),
-            'store_address' => $data['store_address'],
-        ];
-
-        if (isset($data['store_logo'])) {
-            $storeData['store_logo'] = uploadFile($data['store_logo']);
-        }
-
-        if (isset($data['store_banner'])) {
-            $storeData['store_banner'] = uploadFile($data['store_banner']);
-        }
-
-        $this->storeRepository->update($storeData, $id);
-
-        $user = $this->userRepository->find($store->user_id);
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
-
-        $userData = [];
-
-        if (!empty($data['password'])) {
-            $userData['password'] = bcrypt($data['password']);
-        }
-
-        if (!empty($data['email'])) {
-            $userData['email'] = $data['email'];
-        }
-
-        $this->userRepository->update($userData, $store->user_id);
-
-        return response()->json([
-            'message' => 'Store updated successfully',
-            'store' => $store,
-        ], 200);
     }
 }

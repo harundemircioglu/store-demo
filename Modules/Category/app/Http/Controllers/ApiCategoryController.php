@@ -34,22 +34,26 @@ class ApiCategoryController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $category = $this->categoryRepository->store($data);
+
+            return response()->json([
+                'message' => 'Category created successfully',
+                'data' => $category,
+            ], 201);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $category = $this->categoryRepository->store($data);
-
-        return response()->json([
-            'message' => 'Category created successfully',
-            'data' => $category,
-        ], 201);
     }
 
     public function update(Request $request, $id)
@@ -65,21 +69,25 @@ class ApiCategoryController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $category = $this->categoryRepository->update($data, $id);
+
+            return response()->json([
+                'message' => 'Category updated successfully',
+                'data' => $category,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $category = $this->categoryRepository->update($data, $id);
-
-        return response()->json([
-            'message' => 'Category updated successfully',
-            'data' => $category,
-        ], 200);
     }
 }

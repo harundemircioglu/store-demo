@@ -9,7 +9,7 @@ class Subcategory extends Model
 {
     use Loggable;
 
-    protected $guarded = ['id', 'category_id'];
+    protected $guarded = ['id'];
 
     public function category()
     {

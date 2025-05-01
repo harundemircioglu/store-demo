@@ -34,22 +34,26 @@ class ApiCategoryFeatureController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $categoryFeature = $this->categoryFeatureRepository->store($data);
+
+            return response()->json([
+                'message' => 'Category feature created successfully',
+                'data' => $categoryFeature,
+            ], 201);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $categoryFeature = $this->categoryFeatureRepository->store($data);
-
-        return response()->json([
-            'message' => 'Category feature created successfully',
-            'data' => $categoryFeature,
-        ], 201);
     }
 
     public function update(Request $request, $id)
@@ -65,21 +69,25 @@ class ApiCategoryFeatureController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $categoryFeature = $this->categoryFeatureRepository->update($data, $id);
+
+            return response()->json([
+                'message' => 'Category feature updated successfully',
+                'data' => $categoryFeature,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $categoryFeature = $this->categoryFeatureRepository->update($data, $id);
-
-        return response()->json([
-            'message' => 'Category feature updated successfully',
-            'data' => $categoryFeature,
-        ], 200);
     }
 }

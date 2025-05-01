@@ -34,22 +34,26 @@ class ApiSubcategoryController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $subcategory = $this->subcategoryRepository->store($data);
+
+            return response()->json([
+                'message' => 'Subcategory created successfully',
+                'data' => $subcategory,
+            ], 201);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $subcategory = $this->subcategoryRepository->store($data);
-
-        return response()->json([
-            'message' => 'Subcategory created successfully',
-            'data' => $subcategory,
-        ], 201);
     }
 
     public function update(Request $request, $id)
@@ -65,21 +69,25 @@ class ApiSubcategoryController extends ApiBaseController
 
         $data = $validator->validated();
 
-        $data['slug'] = makeSlug($data['name']);
+        try {
+            $data['slug'] = makeSlug($data['name']);
 
-        if (isset($data['image'])) {
-            $data['image'] = uploadFile($data['image']);
+            if (isset($data['image'])) {
+                $data['image'] = uploadFile($data['image']);
+            }
+
+            if (isset($data['icon'])) {
+                $data['icon'] = uploadFile($data['icon']);
+            }
+
+            $subcategory = $this->subcategoryRepository->update($data, $id);
+
+            return response()->json([
+                'message' => 'Subcategory updated successfully',
+                'data' => $subcategory,
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-
-        if (isset($data['icon'])) {
-            $data['icon'] = uploadFile($data['icon']);
-        }
-
-        $subcategory = $this->subcategoryRepository->update($data, $id);
-
-        return response()->json([
-            'message' => 'Subcategory updated successfully',
-            'data' => $subcategory,
-        ], 200);
     }
 }

@@ -12,7 +12,7 @@ class Store extends Model
 
     // store_type => 1 = individual, 2 = corporate
 
-    protected $guarded = ['id', 'user_id'];
+    protected $guarded = ['id'];
 
     public function user()
     {
