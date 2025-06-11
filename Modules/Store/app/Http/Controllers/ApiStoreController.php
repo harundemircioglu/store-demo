@@ -38,16 +38,17 @@ class ApiStoreController extends ApiBaseController
         $data = $validator->validated();
 
         try {
+            // create user
             $userData = [
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'role' => 4,
             ];
-
             $user = $this->userRepository->store($userData);
             $user->assignRole('store');
             $user->save();
 
+            // create store
             $storeData = [
                 'user_id' => $user->id,
                 'store_name' => $data['store_name'],
@@ -57,7 +58,6 @@ class ApiStoreController extends ApiBaseController
                 'store_address' => $data['store_address'],
                 'store_type' => $data['store_type'],
             ];
-
             $store = $this->storeRepository->store($storeData);
 
             return response()->json([
