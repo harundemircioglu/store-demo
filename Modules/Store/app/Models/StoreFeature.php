@@ -3,9 +3,12 @@
 namespace Modules\Store\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Log\Traits\Loggable;
 
 class StoreFeature extends Model
 {
+    use Loggable;
+
     protected $guarded = ['id'];
 
     public function store()
